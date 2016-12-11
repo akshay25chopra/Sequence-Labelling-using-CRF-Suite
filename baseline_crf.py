@@ -11,10 +11,7 @@ y1 = []
 
 def getFeatures(dialog, i):
     features = []
-    # print(dialog)
-    # speaker = dialog[i][1]
-    # prev_speaker = dialog[i-1][1]
-
+    
     if i == 0:
         features.append('change=False')
     else:
@@ -36,13 +33,9 @@ def getFeatures(dialog, i):
             features.append( "TOKEN_" +posTag.token)
 
             features.append( "POS_" +posTag.pos)
-            # if posTag.token == "?":
-            # features.append("Question=True")
-            # else:
-            # features.append("Question=False")
+            
 
-    # count = count+1
-    # print(features)
+    #print(features)
     return features
 
 
@@ -53,20 +46,16 @@ def trainData(x_train, y_train): trainer= pycrfsuite.Trainer(verbose=False)
     trainer.set_params({
         'c1': 1.0,
         'c2' :1e-3,
-        'max_iterations':60,
+        'max_iterations':250,
         'feature.possible_transitions': True
     })
 
     trainer.train('abc.crfsuite')
 
-# print(tokens)
 
-def
-
-
-predictTags(x1, y1, file_name):
+def predictTags(x1, y1, file_name):
     name1 = sys.argv[3]
-    outfile = open(name1,'w' )
+    outfile = open(name1,'w')
     tagger = pycrfsuite.Tagger()
     tagger.open('abc.crfsuite')
     fname = []
@@ -93,10 +82,7 @@ predictTags(x1, y1, file_name):
 
 
 
-def
-
-
-send2features(dialog):
+def send2features(dialog):
     return [getFeatures(dialog, i) for i in range(len(dialog))]
 
 
@@ -104,40 +90,34 @@ def send2labels(dialog):
     return [dialog[i].act_tag for i in range(len(dialog))]
 
 
-# def getTrainData():
-# for root, dirs, files, in os.walk('labeled data'):
-
 def get_data(data_dir):
     x_train = []
     y_train = []
 
     total_list = corpus_tool.get_data(data_dir)
     dialog_filenames = sorted(glob.glob(os.path.join(data_dir, "*.csv")))
-    # f1 = dialog_filenames.split('/')
-    # print(dialogs)
-
-    # print(fname)
-    # start_time =time.time()
+  
+    #print(fname)
+    #start_time =time.time()
 
     for list1 in total_list:
-        # print(dialog)
+        #print(dialog)
         x_train.append(send2features(list1))
         y_train.append(send2labels(list1))
 
-    # print(y_train)
-    # print (time.time() - start_time)
+    #print(y_train)
+    #print (time.time() - start_time)
     return x_train, y_train, dialog_filenames
 
 
 def main():
-    # print('Getting Training Data')
+    print('Getting Training Data')
     x, y, fname = get_data(sys.argv[1])
-    # print('Training Data')
-    trainData(x,y )
-    # print('Getting Testing Data')
+    print('Training Data')
+    trainData(x,y)
+    print('Getting Testing Data')
     x1, y1, fname1 = get_data(sys.argv[2])
-    # print('Predicting Tags')
-    # print(fname1)
+    print('Predicting Tags')
     predictTags(x1, y1, fname1)
     return eval_list, y1
 
