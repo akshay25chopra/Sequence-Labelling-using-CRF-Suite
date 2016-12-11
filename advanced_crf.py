@@ -1,4 +1,4 @@
-import hw3_corpus_tool
+import corpus_tool
 import pycrfsuite
 import glob
 import os
@@ -119,7 +119,7 @@ def get_data(data_dir):
     x_train = []
     y_train = []
 
-    total_list = hw3_corpus_tool.get_data(data_dir)
+    total_list = corpus_tool.get_data(data_dir)
     dialog_filenames = sorted(glob.glob(os.path.join(data_dir, "*.csv")))
     # f1 = dialog_filenames.split('/')
     # print(dialogs)
